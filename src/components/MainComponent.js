@@ -6,6 +6,7 @@ import Home from './HomeComponent';
 import Contact from './ContactComponent';
 import DishDetail from './DishdetailComponent';
 import About from './AboutComponent';
+import { actions } from 'react-redux-form';
 import { addComment, fetchDishes } from '../redux/ActionCreators';
 import { DISHES } from "../shared/dishes";
 import { COMMENTS } from '../shared/comments';
@@ -27,6 +28,8 @@ const mapDispatchToProps = dispatch => ({
   
   addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating, author, comment)),
   fetchDishes: () => { dispatch(fetchDishes())},
+  resetFeedbackForm: () => { dispatch(actions.reset('feedback'))}
+
 });
 
 class Main extends Component {
