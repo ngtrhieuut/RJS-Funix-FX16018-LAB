@@ -5,7 +5,7 @@ import { Card, CardImg, CardImgOverlay, CardText, CardBody,
 import { Control, LocalForm } from 'react-redux-form';
 import { Link } from 'react-router-dom';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';
-
+import { Loading } from './LoadingComponent';
 
     
     function RenderDish({dish}) {
@@ -114,37 +114,49 @@ import { FadeTransform, Fade, Stagger } from 'react-animation-components';
     }
 
     const DishDetail = (props) => {
-        if(props.dish != null){
-            return (
+        if (props.isLoading) {
+            return(
                 <div className="container">
-                <div className="row">
-                    <Breadcrumb>
-                        <BreadcrumbItem><Link to="/menu">Menu</Link></BreadcrumbItem>
-                        <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
-                    </Breadcrumb>
-                    <div className="col-12">
-                        <h3>{props.dish.name}</h3>
-                        <hr />
-                    </div>                
-                </div>
-                <div className="row">
-                    <div className="col-12 col-md-5 m-1">
-                        <RenderDish dish={props.dish} />
+                    <div className="row">
+                        <Loading />
                     </div>
-                    <div className="col-12 col-md-5 m-1">
-                    <RenderComments key={props.dish.id} comments={props.comments}
-                        addComment={props.addComment}
-                        dishId={props.dish.id}
-                    />
-                    </div>
-                </div>
                 </div>
             );
-        }else{
+        }
+        else if (props.errMess) {
+            return(
+                <div className="container">
+                    <div className="row">
+                        <h4>{props.errMess}</h4>
+                    </div>
+                </div>
+            );
+        }
+        else if (props.dish != null)        
+            return (
+                <div className="container">
+                    <div className="row">
+                        <Breadcrumb>
+                            <BreadcrumbItem><Link to='/menu'>Menu</Link></BreadcrumbItem>
+                            <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
+                        </Breadcrumb>
+                        <div className="col-12">
+                            <h3>{props.dish.name}</h3>
+                            <hr />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <RenderDish dish={props.dish} favorite={props.favorite} postFavorite={props.postFavorite} />
+                        <RenderComments comments={props.comments}
+                            postComment={props.postComment}
+                            dishId={props.dish._id} />
+                    </div>
+                </div>
+            );
+        else
             return(
                 <div></div>
             );
-        }        
     }
 
 export default DishDetail;
